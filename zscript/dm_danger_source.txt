@@ -1,0 +1,9 @@
+class DM_DangerSource
+{
+
+  virtual double CalculateCurrentDangerValue(Actor player, Actor other)
+  {
+    return 0;
+  }
+
+} // class DM_DangerSource

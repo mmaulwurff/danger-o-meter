@@ -1,0 +1,40 @@
+class DM_ProjectileDangerSource : DM_DangerSource
+{
+
+  override double CalculateCurrentDangerValue(Actor player, Actor projectile)
+  {
+    if (!projectile.bMISSILE) { return 0; }
+
+    double distance = player.Distance3D(projectile);
+    if (distance > checkRadius) { return 0; }
+
+    vector3 vel = projectile.vel;
+    if (vel.x == 0 && vel.y == 0 && vel.z == 0) { return 0; }
+
+    vector3 playerPos = player.pos;
+    playerPos.z += player.Height / 2;
+
+    vector3 oldPos   = projectile.pos - vel;
+    vector3 oldDelta = playerPos - oldPos;
+    double  oldDist  = oldDelta.length();
+    if (distance > oldDist) { return 0; } // moves from player
+
+    // http://mathworld.wolfram.com/Point-LineDistance3-Dimensional.html
+    vector3 x10          = projectile.pos - playerPos;
+    vector3 prod         = DM_Math.crossProduct(vel, x10);
+    double  lineDistance = prod.length() / vel.length();
+    double  hitDistance  = player.radius + projectile.radius;
+    if (hitDistance < lineDistance) { return 0; }
+
+    if (distance     < 1.0) { distance     = 1.0; }
+    if (lineDistance < 1.0) { lineDistance = 1.0; }
+    double dangerValue = projectile.damage / distance / lineDistance;
+
+    return dangerValue;
+  }
+
+  // private constants section /////////////////////////////////////////////////
+
+  const checkRadius = 1000.0;
+
+} // class DM_DangerSource

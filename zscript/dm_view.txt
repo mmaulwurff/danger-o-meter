@@ -1,0 +1,13 @@
+class DM_View
+{
+
+  static ui void showDanger(double dangerValue, double potentialDangerValue)
+  {
+    string text = String.Format("danger: %f", dangerValue);
+    Font   font = Font.GetFont("SMALLFONT");
+    double x    = 10;
+    double y    = Screen.GetHeight() / 2;
+    Screen.DrawText(font, Font.CR_WHITE, x, y, text);
+  }
+
+} // class DM_View

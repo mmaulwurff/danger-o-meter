@@ -1,0 +1,50 @@
+class DM_Manager
+{
+
+  DM_Manager init()
+  {
+    _dangerValue          = 0.0;
+    _potentialDangerValue = 0.0;
+
+    _dangerSources.push(new("DM_ProjectileDangerSource"));
+
+    return self;
+  }
+
+  void update(Actor player)
+  {
+    _dangerValue          = 0.0;
+    _potentialDangerValue = 0.0;
+
+    let   iterator = ThinkerIterator.Create();
+    Actor a;
+
+    int nDangerSources          = _dangerSources.size();
+    int nPotentialDangerSources = _potentialDangerSources.size();
+
+    while (a = Actor(iterator.Next()))
+    {
+      for (int i = 0; i < nDangerSources; ++i)
+      {
+        _dangerValue += _dangerSources[i].CalculateCurrentDangerValue(player, a);
+      }
+
+      for (int i = 0; i < nPotentialDangerSources; ++i)
+      {
+        _potentialDangerValue += _potentialDangerSources[i].CalculateCurrentDangerValue(player, a);
+      }
+    }
+  }
+
+  double dangerValue()          { return _dangerValue; }
+  double potentialDangerValue() { return _potentialDangerValue; }
+
+  // private attributes section ////////////////////////////////////////////////
+
+  private Array<DM_DangerSource> _dangerSources;
+  private Array<DM_DangerSource> _potentialDangerSources;
+
+  private double _dangerValue;
+  private double _potentialDangerValue;
+
+} // class DM_Manager

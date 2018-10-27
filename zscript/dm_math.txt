@@ -1,0 +1,13 @@
+class DM_Math
+{
+
+  static vector3 crossProduct(vector3 u, vector3 v)
+  {
+    vector3 result;
+    result.x = u.y * v.z - u.z * v.y;
+    result.y = u.z * v.x - u.x * v.z;
+    result.z = u.x * v.y - u.y * v.x;
+    return result;
+  }
+
+} // DM_Math

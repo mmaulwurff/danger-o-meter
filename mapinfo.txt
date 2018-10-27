@@ -1,0 +1,4 @@
+gameinfo
+{
+  AddEventHandlers = "DM_EventHandler"
+}

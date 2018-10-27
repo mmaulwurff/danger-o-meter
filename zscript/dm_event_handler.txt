@@ -1,0 +1,28 @@
+class DM_EventHandler : EventHandler
+{
+
+  const checkRadius = 1000.0;
+
+  override void OnRegister()
+  {
+    _manager = DM_Manager(new("DM_Manager").init());
+  }
+
+  override void WorldTick()
+  {
+    Actor player = players[consolePlayer].mo;
+    if (player == null) { return; }
+
+    _manager.update(player);
+  }
+
+  override void RenderOverlay(RenderEvent e)
+  {
+    _view.showDanger(_manager.dangerValue(), _manager.potentialDangerValue());
+  }
+
+  // private attributes section ////////////////////////////////////////////////
+
+  private DM_Manager _manager;
+
+} // class DM_EventHandler

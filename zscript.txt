@@ -1,0 +1,10 @@
+version "3.2.0"
+
+#include "zscript/dm_event_handler.txt"
+#include "zscript/dm_math.txt"
+#include "zscript/dm_manager.txt"
+
+#include "zscript/dm_danger_source.txt"
+#include "zscript/dm_projectile_danger_source.txt"
+
+#include "zscript/dm_view.txt"
