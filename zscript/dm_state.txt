@@ -1,0 +1,15 @@
+class DM_State
+{
+
+  DM_State init()
+  {
+    dangerValue          = 0.0;
+    potentialDangerValue = 0.0;
+
+    return self;
+  }
+
+  double dangerValue;
+  double potentialDangerValue;
+
+} // class DM_State

@@ -1,13 +1,26 @@
 class DM_View
 {
 
-  static ui void showDanger(double dangerValue, double potentialDangerValue)
+  static ui void show(DM_State state)
   {
-    string text = String.Format("danger: %f", dangerValue);
+    showDanger(state.dangerValue, state.potentialDangerValue);
+  }
+
+  // private functions section /////////////////////////////////////////////////
+
+  private static ui void showDanger(double dangerValue, double potentialDangerValue)
+  {
+    string dangerText          = String.Format("danger:    %f", dangerValue);
+    string potentialDangertext = String.Format("potential: %f", potentialDangerValue);
+
     Font   font = Font.GetFont("SMALLFONT");
     double x    = 10;
     double y    = Screen.GetHeight() / 2;
-    Screen.DrawText(font, Font.CR_WHITE, x, y, text);
+
+    Screen.DrawText(font, Font.CR_WHITE, x, y, dangerText);
+    y += 10;
+    Screen.DrawText(font, Font.CR_WHITE, x, y, potentialDangerText);
+    y += 10;
   }
 
 } // class DM_View

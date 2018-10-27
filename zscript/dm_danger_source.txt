@@ -1,9 +1,16 @@
 class DM_DangerSource
 {
 
-  virtual double CalculateCurrentDangerValue(Actor player, Actor other)
+  /**
+   * Calculated current danger value
+   * @returns danger value and potential danger value.
+   */
+  virtual double, double CalculateCurrentDangerValue( Actor  player
+                                                    , Actor  other
+                                                    , double distance
+                                                    )
   {
-    return 0;
+    return 0, 0;
   }
 
 } // class DM_DangerSource

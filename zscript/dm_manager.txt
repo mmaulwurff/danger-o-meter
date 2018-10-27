@@ -3,48 +3,47 @@ class DM_Manager
 
   DM_Manager init()
   {
-    _dangerValue          = 0.0;
-    _potentialDangerValue = 0.0;
-
     _dangerSources.push(new("DM_ProjectileDangerSource"));
+    _dangerSources.push(new("DM_EnemiesDangerSource"));
 
     return self;
   }
 
-  void update(Actor player)
+  void update(Actor player, out DM_State result)
   {
-    _dangerValue          = 0.0;
-    _potentialDangerValue = 0.0;
+    double dangerValue          = 0.0;
+    double potentialDangerValue = 0.0;
 
     let   iterator = ThinkerIterator.Create();
     Actor a;
 
-    int nDangerSources          = _dangerSources.size();
-    int nPotentialDangerSources = _potentialDangerSources.size();
+    int nDangerSources = _dangerSources.size();
+    double d, p;
 
     while (a = Actor(iterator.Next()))
     {
+      double distance = player.Distance3D(a);
+      if (distance == 0)          { continue; }
+      if (distance > checkRadius) { continue; }
+
       for (int i = 0; i < nDangerSources; ++i)
       {
-        _dangerValue += _dangerSources[i].CalculateCurrentDangerValue(player, a);
-      }
-
-      for (int i = 0; i < nPotentialDangerSources; ++i)
-      {
-        _potentialDangerValue += _potentialDangerSources[i].CalculateCurrentDangerValue(player, a);
+        [d, p] = _dangerSources[i].CalculateCurrentDangerValue(player, a, distance);
+        dangerValue          += d;
+        potentialDangerValue += p;
       }
     }
-  }
 
-  double dangerValue()          { return _dangerValue; }
-  double potentialDangerValue() { return _potentialDangerValue; }
+    result.dangerValue          = dangerValue;
+    result.potentialDangerValue = potentialDangerValue;
+  }
 
   // private attributes section ////////////////////////////////////////////////
 
   private Array<DM_DangerSource> _dangerSources;
-  private Array<DM_DangerSource> _potentialDangerSources;
 
-  private double _dangerValue;
-  private double _potentialDangerValue;
+  // private constants section /////////////////////////////////////////////////
+
+  const checkRadius = 1000.0;
 
 } // class DM_Manager

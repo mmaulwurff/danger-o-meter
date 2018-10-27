@@ -1,0 +1,19 @@
+class DM_EnemiesDangerSource : DM_DangerSource
+{
+
+  override double, double CalculateCurrentDangerValue( Actor  player
+                                                     , Actor  other
+                                                     , double distance
+                                                     )
+  {
+    if (!other.bISMONSTER)    { return 0, 0; }
+
+    int health = other.health;
+    if (health <= 0) { return 0, 0; }
+
+    if (other.target == null) { return 0, health / distance; }
+
+    return health / distance, 0;
+  }
+
+} // class DM_EnemiesDangerSource
