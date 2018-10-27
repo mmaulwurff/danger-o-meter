@@ -11,13 +11,13 @@ class DM_FloorDangerSource : DM_DangerSource
 
     double  potentialDamageAmount = 0.0;
     vector2 playerPos             = player.pos.xy;
-    int     nProbePoints          = probePointsX.size();
+    int     nProbePoints          = _probePointsX.size();
 
     for (int i = 0; i < nProbePoints; ++i)
     {
       vector2 probePoint = playerPos;
-      probePoint.x += probePointsX[i] * player.radius * 3;
-      probePoint.y += probePointsY[i] * player.radius * 3;
+      probePoint.x += _probePointsX[i] * player.radius * 3;
+      probePoint.y += _probePointsY[i] * player.radius * 3;
 
       int probeSectorDamage  = SectorForPoint(probePoint).damageAmount;
       potentialDamageAmount += probeSectorDamage;
@@ -25,6 +25,9 @@ class DM_FloorDangerSource : DM_DangerSource
 
     // get average damage from all probe sectors
     potentialDamageAmount /= nProbePoints;
+
+    damageAmount          *= _internalMultiplier * _userMultiplier;
+    potentialDamageAmount *= _internalMultiplier * _userMultiplier;
 
     return damageAmount, potentialDamageAmount;
   }
@@ -36,9 +39,9 @@ class DM_FloorDangerSource : DM_DangerSource
     return Sector.PointInSector(point);
   }
 
-  // private attributes section ////////////////////////////////////////////////
+  // constants section /////////////////////////////////////////////////////////
 
-  static const int probePointsX[] = { 1, -1, 0,  0, 1,  1, -1, -1 };
-  static const int probePointsY[] = { 0,  0, 1, -1, 1, -1,  1, -1 };
+  static const int _probePointsX[] = { 1, -1, 0,  0, 1,  1, -1, -1 };
+  static const int _probePointsY[] = { 0,  0, 1, -1, 1, -1,  1, -1 };
 
 } // class DM_FloorDangerSource

@@ -1,0 +1,3 @@
+user float DM_ProjectileDangerSourceMultiplier = 1.0;
+user float DM_EnemiesDangerSourceMultiplier    = 1.0;
+user float DM_FloorDangerSourceMultiplier      = 1.0;

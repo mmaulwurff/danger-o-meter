@@ -20,22 +20,26 @@ class DM_EnemiesDangerSource : DM_DangerSource
     else                    { angle =  90.0; }
 
     double relativeAngle = (angle + 360.0 + player.angle % 360.0) % 360;
+    double dangerValue   = health;
 
     // enemies behind player are considered more dangerous
     if (!(100.0 < relativeAngle && relativeAngle < 260.0))
     {
-      health *= 3;
+      dangerValue *= 3;
     }
 
     // enemies that see player are considered more dangerous
     if (checkSight(other, player))
     {
-      health *= 3;
+      dangerValue *= 3;
     }
 
-    if (other.target == null) { return 0, health / distance; }
+    dangerValue /= distance;
+    dangerValue *= _internalMultiplier * _userMultiplier;
 
-    return health / distance, 0;
+    if (other.target == null) { return 0, dangerValue; }
+
+    return dangerValue, 0;
   }
 
   // private functions section /////////////////////////////////////////////////

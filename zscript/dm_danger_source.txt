@@ -1,6 +1,23 @@
 class DM_DangerSource
 {
 
+  // public functions section //////////////////////////////////////////////////
+
+  DM_DangerSource init(double internalMultiplier, string userMultiplierCvar)
+  {
+    _internalMultiplier = internalMultiplier;
+    _userMultiplierCVar = userMultiplierCVar;
+
+    return self;
+  }
+
+  void updateUserMultiplier(PlayerInfo player)
+  {
+    _userMultiplier = CVar.GetCVar(_userMultiplierCVar, player).getFloat();
+  }
+
+  // virtual functions section /////////////////////////////////////////////////
+
   /**
    * Calculated current danger value
    * @returns danger value and potential danger value.
@@ -12,5 +29,11 @@ class DM_DangerSource
   {
     return 0, 0;
   }
+
+  // protected attributes section //////////////////////////////////////////////
+
+  double _internalMultiplier;
+  double _userMultiplier;
+  string _userMultiplierCVar;
 
 } // class DM_DangerSource

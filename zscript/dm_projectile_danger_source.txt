@@ -31,6 +31,8 @@ class DM_ProjectileDangerSource : DM_DangerSource
     if (lineDistance < 1.0) { lineDistance = 1.0; }
     double dangerValue = projectile.damage / distance / lineDistance;
 
+    dangerValue *= _internalMultiplier * _userMultiplier * projectile.speed;
+
     return dangerValue, 0.0;
   }
 

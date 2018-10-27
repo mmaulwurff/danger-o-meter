@@ -3,16 +3,17 @@ class DM_Manager
 
   DM_Manager init()
   {
-    _dangerSources.push(new("DM_ProjectileDangerSource"));
-    _dangerSources.push(new("DM_EnemiesDangerSource"));
+    _dangerSources.push(new("DM_ProjectileDangerSource").init(666, "DM_ProjectileDangerSourceMultiplier"));
+    _dangerSources.push(new("DM_EnemiesDangerSource"   ).init(1.0, "DM_EnemiesDangerSourceMultiplier"   ));
 
-    _dangerSourcesLocal.push(new("DM_FloorDangerSource"));
+    _dangerSourcesLocal.push(new("DM_FloorDangerSource").init(5.0, "DM_FloorDangerSourceMultiplier"));
 
     return self;
   }
 
   void update(Actor player, out DM_State result)
   {
+    PlayerInfo playerInfo = player.player;
     double dangerValue          = 0.0;
     double potentialDangerValue = 0.0;
 
@@ -20,6 +21,11 @@ class DM_Manager
     Actor a;
 
     int nDangerSources = _dangerSources.size();
+    for (int i = 0; i < nDangerSources; ++i)
+    {
+      _dangerSources[i].updateUserMultiplier(playerInfo);
+    }
+
     double d, p;
 
     while (a = Actor(iterator.Next()))
@@ -39,6 +45,8 @@ class DM_Manager
     int nDangerSourcesLocal = _dangerSourcesLocal.size();
     for (int i = 0; i < nDangerSourcesLocal; ++i)
     {
+      _dangerSourcesLocal[i].updateUserMultiplier(playerInfo);
+
       [d, p] = _dangerSourcesLocal[i].CalculateCurrentDangerValue(player, a, 0.0);
       dangerValue          += d;
       potentialDangerValue += p;
