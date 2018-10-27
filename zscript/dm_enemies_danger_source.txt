@@ -6,10 +6,26 @@ class DM_EnemiesDangerSource : DM_DangerSource
                                                      , double distance
                                                      )
   {
-    if (!other.bISMONSTER)    { return 0, 0; }
+    if (!other.bISMONSTER) { return 0, 0; }
 
     int health = other.health;
     if (health <= 0) { return 0, 0; }
+
+    vector3 delta = other.pos - player.pos;
+    double  angle;
+    if      (delta.y > 0.0) { angle = atan(delta.x / delta.y) +  90.0; }
+    else if (delta.y < 0.0) { angle = atan(delta.x / delta.y) + 270.0; }
+    else if (delta.x < 0.0) { angle =   0.0; }
+    else if (delta.x > 0.0) { angle = 180.0; }
+    else                    { angle =  90.0; }
+
+    double relativeAngle = (angle + 360.0 + player.angle % 360.0) % 360;
+
+    // enemies behing you are considered more dangerous
+    if (!(100.0 < relativeAngle && relativeAngle < 260.0))
+    {
+      health *= 3;
+    }
 
     if (other.target == null) { return 0, health / distance; }
 
