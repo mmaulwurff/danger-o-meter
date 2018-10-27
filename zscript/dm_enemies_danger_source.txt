@@ -1,7 +1,7 @@
 class DM_EnemiesDangerSource : DM_DangerSource
 {
 
-  override double, double CalculateCurrentDangerValue( Actor  player
+  override double, double calculateCurrentDangerValue( Actor  player
                                                      , Actor  other
                                                      , double distance
                                                      )
@@ -21,8 +21,14 @@ class DM_EnemiesDangerSource : DM_DangerSource
 
     double relativeAngle = (angle + 360.0 + player.angle % 360.0) % 360;
 
-    // enemies behing you are considered more dangerous
+    // enemies behind player are considered more dangerous
     if (!(100.0 < relativeAngle && relativeAngle < 260.0))
+    {
+      health *= 3;
+    }
+
+    // enemies that see player are considered more dangerous
+    if (checkSight(other, player))
     {
       health *= 3;
     }
@@ -30,6 +36,13 @@ class DM_EnemiesDangerSource : DM_DangerSource
     if (other.target == null) { return 0, health / distance; }
 
     return health / distance, 0;
+  }
+
+  // private functions section /////////////////////////////////////////////////
+
+  private play bool checkSight(Actor source, Actor target) const
+  {
+    return source.CheckSight(target);
   }
 
 } // class DM_EnemiesDangerSource
