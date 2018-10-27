@@ -6,6 +6,8 @@ class DM_Manager
     _dangerSources.push(new("DM_ProjectileDangerSource"));
     _dangerSources.push(new("DM_EnemiesDangerSource"));
 
+    _dangerSourcesLocal.push(new("DM_FloorDangerSource"));
+
     return self;
   }
 
@@ -34,6 +36,14 @@ class DM_Manager
       }
     }
 
+    int nDangerSourcesLocal = _dangerSourcesLocal.size();
+    for (int i = 0; i < nDangerSourcesLocal; ++i)
+    {
+      [d, p] = _dangerSourcesLocal[i].CalculateCurrentDangerValue(player, a, 0.0);
+      dangerValue          += d;
+      potentialDangerValue += p;
+    }
+
     result.dangerValue          = dangerValue;
     result.potentialDangerValue = potentialDangerValue;
   }
@@ -41,6 +51,7 @@ class DM_Manager
   // private attributes section ////////////////////////////////////////////////
 
   private Array<DM_DangerSource> _dangerSources;
+  private Array<DM_DangerSource> _dangerSourcesLocal;
 
   // private constants section /////////////////////////////////////////////////
 

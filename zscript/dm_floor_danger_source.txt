@@ -1,0 +1,44 @@
+class DM_FloorDangerSource : DM_DangerSource
+{
+
+  override double, double CalculateCurrentDangerValue( Actor  player
+                                                     , Actor  other
+                                                     , double distance
+                                                     )
+  {
+    Sector  currentSector         = player.curSector;
+    double  damageAmount          = currentSector.damageAmount;
+
+    double  potentialDamageAmount = 0.0;
+    vector2 playerPos             = player.pos.xy;
+    int     nProbePoints          = probePointsX.size();
+
+    for (int i = 0; i < nProbePoints; ++i)
+    {
+      vector2 probePoint = playerPos;
+      probePoint.x += probePointsX[i] * player.radius * 3;
+      probePoint.y += probePointsY[i] * player.radius * 3;
+
+      int probeSectorDamage  = SectorForPoint(probePoint).damageAmount;
+      potentialDamageAmount += probeSectorDamage;
+    }
+
+    // get average damage from all probe sectors
+    potentialDamageAmount /= nProbePoints;
+
+    return damageAmount, potentialDamageAmount;
+  }
+
+  // private functions section /////////////////////////////////////////////////
+
+  private play Sector SectorForPoint(vector2 point) const
+  {
+    return Sector.PointInSector(point);
+  }
+
+  // private attributes section ////////////////////////////////////////////////
+
+  static const int probePointsX[] = { 1, -1, 0,  0, 1,  1, -1, -1 };
+  static const int probePointsY[] = { 0,  0, 1, -1, 1, -1,  1, -1 };
+
+} // class DM_FloorDangerSource
